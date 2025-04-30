@@ -1,0 +1,70 @@
+[2025-04-28T17:32:29.643+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:32:27.620299+00:00 [queued]>
+[2025-04-28T17:32:29.655+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:32:27.620299+00:00 [queued]>
+[2025-04-28T17:32:29.655+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2025-04-28T17:32:29.673+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): run_load_forecast> on 2025-04-28 17:32:27.620299+00:00
+[2025-04-28T17:32:29.685+0000] {standard_task_runner.py:60} INFO - Started process 2968 to run task
+[2025-04-28T17:32:29.690+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'daily_forecast_dag', 'run_load_forecast', 'manual__2025-04-28T17:32:27.620299+00:00', '--job-id', '50', '--raw', '--subdir', 'DAGS_FOLDER/historical_predictions_dag.py.py', '--cfg-path', '/tmp/tmp39h8m33x']
+[2025-04-28T17:32:29.692+0000] {standard_task_runner.py:88} INFO - Job 50: Subtask run_load_forecast
+[2025-04-28T17:32:29.757+0000] {task_command.py:423} INFO - Running <TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:32:27.620299+00:00 [running]> on host 5464d109121d
+[2025-04-28T17:32:29.909+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='daily_forecast_dag' AIRFLOW_CTX_TASK_ID='run_load_forecast' AIRFLOW_CTX_EXECUTION_DATE='2025-04-28T17:32:27.620299+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-04-28T17:32:27.620299+00:00'
+[2025-04-28T17:32:31.331+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/indexes/extension.py", line 161, in map
+    result = mapper(self)
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 46, in is_holiday
+    return int(timestamp.date() in nl_holidays)
+TypeError: 'numpy.ndarray' object is not callable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/historical_predictions_dag.py.py", line 31, in forecast_task
+    run_forecast_pipeline(
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 119, in run_forecast_pipeline
+    feature_df = build_feature_dataframe(raw_weather)
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 49, in build_feature_dataframe
+    df['is_holiday'] = df['timestamp'].apply(is_holiday)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/series.py", line 4630, in apply
+    return SeriesApply(self, func, convert_dtype, args, kwargs).apply()
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/apply.py", line 1025, in apply
+    return self.apply_standard()
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/apply.py", line 1073, in apply_standard
+    mapped = obj._values.map(f)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/arrays/_mixins.py", line 86, in method
+    return meth(self, *args, **kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/arrays/datetimelike.py", line 761, in map
+    return Index(self).map(mapper).array
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/indexes/extension.py", line 171, in map
+    return self.astype(object).map(mapper)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 6161, in map
+    new_values = self._map_values(mapper, na_action=na_action)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/core/base.py", line 924, in _map_values
+    new_values = map_f(values, mapper)
+  File "pandas/_libs/lib.pyx", line 2834, in pandas._libs.lib.map_infer
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 46, in is_holiday
+    return int(timestamp.date() in nl_holidays)
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/holiday_base.py", line 417, in __contains__
+    return dict.__contains__(cast("Dict[Any, Any]", self), self.__keytransform__(key))
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/holiday_base.py", line 616, in __keytransform__
+    self._populate(dt.year)
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/holiday_base.py", line 832, in _populate
+    self._populate_common_holidays()
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/holiday_base.py", line 839, in _populate_common_holidays
+    pch_method()
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/countries/netherlands.py", line 43, in _populate_public_holidays
+    self._add_new_years_day(tr("Nieuwjaarsdag"))
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/groups/international.py", line 123, in _add_new_years_day
+    return self._add_holiday_jan_1(name)
+  File "/home/airflow/.local/lib/python3.8/site-packages/holidays/holiday_base.py", line 447, in <lambda>
+    date(self._year, MONTHS[month], int(day)),
+TypeError: integer argument expected, got float
+[2025-04-28T17:32:31.352+0000] {taskinstance.py:1138} INFO - Marking task as UP_FOR_RETRY. dag_id=daily_forecast_dag, task_id=run_load_forecast, execution_date=20250428T173227, start_date=20250428T173229, end_date=20250428T173231
+[2025-04-28T17:32:31.369+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 50 for task run_load_forecast (integer argument expected, got float; 2968)
+[2025-04-28T17:32:31.427+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-04-28T17:32:31.449+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

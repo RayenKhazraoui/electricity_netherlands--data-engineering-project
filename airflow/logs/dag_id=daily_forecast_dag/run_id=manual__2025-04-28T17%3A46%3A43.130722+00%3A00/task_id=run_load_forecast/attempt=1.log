@@ -1,0 +1,28 @@
+[2025-04-28T17:46:45.527+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:46:43.130722+00:00 [queued]>
+[2025-04-28T17:46:45.539+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:46:43.130722+00:00 [queued]>
+[2025-04-28T17:46:45.540+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 1
+[2025-04-28T17:46:45.564+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): run_load_forecast> on 2025-04-28 17:46:43.130722+00:00
+[2025-04-28T17:46:45.575+0000] {standard_task_runner.py:60} INFO - Started process 3383 to run task
+[2025-04-28T17:46:45.580+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'daily_forecast_dag', 'run_load_forecast', 'manual__2025-04-28T17:46:43.130722+00:00', '--job-id', '53', '--raw', '--subdir', 'DAGS_FOLDER/historical_predictions_dag.py.py', '--cfg-path', '/tmp/tmptrejjhsx']
+[2025-04-28T17:46:45.581+0000] {standard_task_runner.py:88} INFO - Job 53: Subtask run_load_forecast
+[2025-04-28T17:46:45.642+0000] {task_command.py:423} INFO - Running <TaskInstance: daily_forecast_dag.run_load_forecast manual__2025-04-28T17:46:43.130722+00:00 [running]> on host 5464d109121d
+[2025-04-28T17:46:45.769+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='daily_forecast_dag' AIRFLOW_CTX_TASK_ID='run_load_forecast' AIRFLOW_CTX_EXECUTION_DATE='2025-04-28T17:46:43.130722+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-04-28T17:46:43.130722+00:00'
+[2025-04-28T17:46:46.754+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/historical_predictions_dag.py.py", line 31, in forecast_task
+    run_forecast_pipeline(
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 125, in run_forecast_pipeline
+    feature_df = build_feature_dataframe(raw_weather)
+  File "/opt/airflow/dags/tasks/historical_predictions.py", line 42, in build_feature_dataframe
+    with open('tasks/holidays_NL.pkl', 'rb') as file:   # <-- let op 'rb'
+FileNotFoundError: [Errno 2] No such file or directory: 'tasks/holidays_NL.pkl'
+[2025-04-28T17:46:46.763+0000] {taskinstance.py:1138} INFO - Marking task as FAILED. dag_id=daily_forecast_dag, task_id=run_load_forecast, execution_date=20250428T174643, start_date=20250428T174645, end_date=20250428T174646
+[2025-04-28T17:46:46.784+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 53 for task run_load_forecast ([Errno 2] No such file or directory: 'tasks/holidays_NL.pkl'; 3383)
+[2025-04-28T17:46:46.835+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-04-28T17:46:46.857+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

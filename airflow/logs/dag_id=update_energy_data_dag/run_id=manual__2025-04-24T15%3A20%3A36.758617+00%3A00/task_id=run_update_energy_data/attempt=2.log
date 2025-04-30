@@ -1,0 +1,38 @@
+[2025-04-24T15:22:47.946+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: update_energy_data_dag.run_update_energy_data manual__2025-04-24T15:20:36.758617+00:00 [queued]>
+[2025-04-24T15:22:47.956+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: update_energy_data_dag.run_update_energy_data manual__2025-04-24T15:20:36.758617+00:00 [queued]>
+[2025-04-24T15:22:47.956+0000] {taskinstance.py:2170} INFO - Starting attempt 2 of 2
+[2025-04-24T15:22:47.971+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): run_update_energy_data> on 2025-04-24 15:20:36.758617+00:00
+[2025-04-24T15:22:47.980+0000] {standard_task_runner.py:60} INFO - Started process 169 to run task
+[2025-04-24T15:22:47.986+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'update_energy_data_dag', 'run_update_energy_data', 'manual__2025-04-24T15:20:36.758617+00:00', '--job-id', '15', '--raw', '--subdir', 'DAGS_FOLDER/energy_dag.py', '--cfg-path', '/tmp/tmpdyba_fs0']
+[2025-04-24T15:22:47.988+0000] {standard_task_runner.py:88} INFO - Job 15: Subtask run_update_energy_data
+[2025-04-24T15:22:48.044+0000] {task_command.py:423} INFO - Running <TaskInstance: update_energy_data_dag.run_update_energy_data manual__2025-04-24T15:20:36.758617+00:00 [running]> on host a1e753507fc0
+[2025-04-24T15:22:48.128+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='update_energy_data_dag' AIRFLOW_CTX_TASK_ID='run_update_energy_data' AIRFLOW_CTX_EXECUTION_DATE='2025-04-24T15:20:36.758617+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-04-24T15:20:36.758617+00:00'
+[2025-04-24T15:22:48.129+0000] {logging_mixin.py:188} INFO - hoi
+[2025-04-24T15:23:17.752+0000] {logging_mixin.py:188} INFO - Data A65_A01 Retrieved Successfully
+[2025-04-24T15:23:19.620+0000] {logging_mixin.py:188} INFO - Data A65_A16 Retrieved Successfully
+[2025-04-24T15:23:29.219+0000] {logging_mixin.py:188} INFO - Data A75_A16 Retrieved Successfully
+[2025-04-24T15:23:29.569+0000] {logging_mixin.py:188} WARNING - Fetching Data Progress:   0%|          | 0/1 [00:00<?, ?segment/s]
+[2025-04-24T15:23:31.319+0000] {logging_mixin.py:188} WARNING - Fetching Data Progress: 100%|##########| 1/1 [00:01<00:00,  1.75s/segment]
+[2025-04-24T15:23:31.320+0000] {logging_mixin.py:188} WARNING - Fetching Data Progress: 100%|##########| 1/1 [00:01<00:00,  1.75s/segment]
+[2025-04-24T15:23:31.529+0000] {logging_mixin.py:188} INFO - 📥 Upserting A01_data ...
+[2025-04-24T15:23:31.533+0000] {logging_mixin.py:188} INFO - ❌ Error: connection to server at "localhost" (::1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+[2025-04-24T15:23:31.533+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/tasks/update_db.py", line 37, in update_energy_data
+    sql.upsert_dataframe(df_data, table_name, "timestamp", db_config)
+  File "/opt/airflow/dags/tasks/sql.py", line 159, in upsert_dataframe
+    cur.close()
+UnboundLocalError: local variable 'cur' referenced before assignment
+[2025-04-24T15:23:31.542+0000] {taskinstance.py:1138} INFO - Marking task as FAILED. dag_id=update_energy_data_dag, task_id=run_update_energy_data, execution_date=20250424T152036, start_date=20250424T152247, end_date=20250424T152331
+[2025-04-24T15:23:31.557+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 15 for task run_update_energy_data (local variable 'cur' referenced before assignment; 169)
+[2025-04-24T15:23:31.589+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-04-24T15:23:31.606+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check
