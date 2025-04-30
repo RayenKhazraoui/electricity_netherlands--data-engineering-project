@@ -51,4 +51,4 @@ Historical data is used to create forecasting models.
 
 Below is a screenshot of the Power BI dashboard used in this project:
 
-<img src="images/powerbi_overview.png" width="700"/>
+<img src="images/Powerbi_overview.png" width="700"/>
