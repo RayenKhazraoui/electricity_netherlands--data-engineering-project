@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 
 DB_NAME = "energy"
 DB_USER = "rayen"
-DB_PASSWORD = "xxx"
+DB_PASSWORD = "hallo"
 DB_HOST = "172.17.0.1"
 DB_PORT = "5432"
 
@@ -45,6 +45,8 @@ def insert_dataframe_with_unique_constraint(df, table_name, unique_columns, db_c
     for col in unique_columns:
         if col in df.columns and col == "timestamp":
             df[col] = pd.to_datetime(df[col], errors="coerce")
+
+    df = df.drop_duplicates(subset=unique_columns)
 
     # Create the engine
     engine = create_engine(
@@ -109,6 +111,9 @@ def upsert_dataframe(df, table_name, conflict_columns, db_config, schema_name="p
     
     # Standardize column names: lowercase and replace spaces with underscores
     df.columns = df.columns.str.lower().str.replace(" ", "_")
+
+    df = df.drop_duplicates(subset=conflict_columns)
+
     
     # Convert conflict_columns to list if it is a string
     if isinstance(conflict_columns, str):
@@ -176,6 +181,8 @@ def load_table(table):
     return df
 
 
+
+from psycopg2 import sql
 def delete_table(table):
 
 
@@ -194,7 +201,7 @@ def delete_table(table):
         print('deleting ',table)
 
         # SQL query to drop the table
-        drop_table_query = f"DROP TABLE IF EXISTS {table} CASCADE;"
+        drop_table_query =  sql.SQL("DROP TABLE IF EXISTS {} CASCADE;").format(sql.Identifier(table))
         
         # Execute the query
         cur.execute(drop_table_query)
@@ -217,8 +224,8 @@ def reset_database():
     DB_CONFIG = {
         "dbname": "energy",
         "user": "rayen",
-        "password": "xxx",
-        "host": "172.17.0.1",  # IMPORTANT: resolves to your host machine inside Docker
+        "password": "hallo",
+        "host": "localhost",  # IMPORTANT: resolves to your host machine inside Docker
         "port": "5432"
     }
 
